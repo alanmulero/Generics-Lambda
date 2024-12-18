@@ -3,8 +3,11 @@ package br.com.screeMatch.scrennMatch.principal;
 import br.com.screeMatch.scrennMatch.model.DadosEpisodio;
 import br.com.screeMatch.scrennMatch.model.DadosSerie;
 import br.com.screeMatch.scrennMatch.model.DadosTemporada;
+import br.com.screeMatch.scrennMatch.model.Episodio;
 import br.com.screeMatch.scrennMatch.service.ConsumoApi;
 import br.com.screeMatch.scrennMatch.service.ConverteDados;
+import ch.qos.logback.core.net.SyslogOutputStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +68,13 @@ public class Principal {
 				.sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
 				.limit(5)
 				.forEach(System.out::println);
-
+		
+		
+		List<Episodio> episodios = temporadas.stream()
+				.flatMap(t -> t.episodios().stream()
+				.map(d -> new Episodio(t.numero(),d))).collect(Collectors.toList());		
+						
+		episodios.forEach(System.out::println);			
 
 
 		// A partir do Java 8
