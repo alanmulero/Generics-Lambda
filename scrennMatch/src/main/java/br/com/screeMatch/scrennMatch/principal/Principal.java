@@ -11,6 +11,8 @@ import ch.qos.logback.core.net.SyslogOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -75,10 +77,29 @@ public class Principal {
 				.map(d -> new Episodio(t.numero(),d))).collect(Collectors.toList());		
 						
 		episodios.forEach(System.out::println);			
+		
+		
+		//Trabalhando com datas
+		System.out.println("A partir de que ano vc que ver os episodios?");
+		var ano = leitura.nextInt();
+		leitura.nextLine();
+		
+		// variavel de busca da data
+		LocalDate dataBusca = LocalDate.of(ano, 1, 1);
+		
+		// criando uma data formatada 
+		DateTimeFormatter dataFormatada = DateTimeFormatter.ofPattern("dd/MM/yyyy");		
+		episodios.stream()
+		.filter(e -> e.getDataLancamento() != null && e.getDataLancamento().isAfter(dataBusca))
+		.forEach(e -> {
+			System.out.println(
+					"Temporada: " + e.getTemporada()+
+					"Episodio: " + e.getTitulo()+
+					 "Data escolhida para filtrar: " + e.getDataLancamento().format(dataFormatada));
+		});
+		
+		
 
-
-		// A partir do Java 8
-		// temporadas.forEach(t -> t.episodios().forEach(e ->
-		// System.out.println(e.titulo())));
+	
 	}
 }
