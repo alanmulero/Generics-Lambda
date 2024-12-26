@@ -10,7 +10,7 @@ import ch.qos.logback.core.net.SyslogOutputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import java.time.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -66,9 +66,13 @@ public class Principal {
 		// Pegando a nova lista de Stream = dadosEpisodios
 		System.out.println("\n Top 5 episodios");
 		dadosEpisodios.stream()
+		// Usando metodo peek() para dar uma "Olhadinha" no código.
 				.filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+				.peek(e -> System.out.println("Conferindo primeiro filtro (N/A)"+e))
 				.sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
+				.peek(e -> System.out.println("Conferindo a ordenação (Ordem Alfabetica)"+e))
 				.limit(5)
+				.peek(e -> System.out.println("Conferindo o limite de 5 "+e))
 				.forEach(System.out::println);
 		
 		
@@ -98,7 +102,9 @@ public class Principal {
 					 "Data escolhida para filtrar: " + e.getDataLancamento().format(dataFormatada));
 		});
 		
-		
+		System.out.println("Imprimindo hora :");
+		LocalDateTime horaBusca = LocalDateTime.now();
+		System.out.println(horaBusca);
 
 	
 	}
