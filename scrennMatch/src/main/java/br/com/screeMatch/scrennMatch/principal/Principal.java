@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -105,6 +106,23 @@ public class Principal {
 		System.out.println("Imprimindo hora :");
 		LocalDateTime horaBusca = LocalDateTime.now();
 		System.out.println(horaBusca);
+		
+		System.out.println("*****************************************");
+		System.out.println("Filtrando um episódio.");
+		
+		System.out.println("Digite um trecho do titulo do episódio");
+		var trechoLeitura = leitura.nextLine();
+		// Obj Optional
+		Optional<Episodio> episodioBuscado = episodios.stream()
+		.filter(e -> e.getTitulo().toUpperCase().contains(trechoLeitura.toUpperCase()))
+		.findFirst();
+		if(episodioBuscado.isPresent()) {
+			System.out.println("Episódio encontrado");
+			System.out.println("Temporada: "+ episodioBuscado.get().getTemporada()); // Optional é tipo container
+		} else {
+			System.out.println("Referencia não encontarda.");
+		}
+		
 
 	
 	}
