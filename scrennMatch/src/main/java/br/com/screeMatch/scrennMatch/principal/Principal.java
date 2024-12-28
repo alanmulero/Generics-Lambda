@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collector;
@@ -112,7 +113,7 @@ public class Principal {
 		
 		System.out.println("Digite um trecho do titulo do episódio");
 		var trechoLeitura = leitura.nextLine();
-		// Obj Optional
+		// Obj Optional evitando o null
 		Optional<Episodio> episodioBuscado = episodios.stream()
 		.filter(e -> e.getTitulo().toUpperCase().contains(trechoLeitura.toUpperCase()))
 		.findFirst();
@@ -123,7 +124,13 @@ public class Principal {
 			System.out.println("Referencia não encontarda.");
 		}
 		
-
+		// Analizando Dados
+		Map<Integer, Double> mediaAvaliacaoPorTemporada = episodios.stream()
+				.filter(e -> e.getAvaliacao() > 0.0)
+				.collect(Collectors.groupingBy(Episodio::getTemporada,
+						Collectors.averagingDouble(Episodio::getAvaliacao)));
+		System.out.println(mediaAvaliacaoPorTemporada);
+				
 	
 	}
 }
