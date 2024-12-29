@@ -7,14 +7,18 @@ import br.com.screeMatch.scrennMatch.model.Episodio;
 import br.com.screeMatch.scrennMatch.service.ConsumoApi;
 import br.com.screeMatch.scrennMatch.service.ConverteDados;
 import ch.qos.logback.core.net.SyslogOutputStream;
+import ch.qos.logback.core.util.SystemInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.origin.SystemEnvironmentOrigin;
+
 import java.time.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -130,7 +134,11 @@ public class Principal {
 				.collect(Collectors.groupingBy(Episodio::getTemporada,
 						Collectors.averagingDouble(Episodio::getAvaliacao)));
 		System.out.println(mediaAvaliacaoPorTemporada);
+		// Classe pronta do Java para Estatísticas
+		DoubleSummaryStatistics estatistica = episodios.stream()
+				.filter(e -> e.getAvaliacao() > 0.0)
+				.collect(Collectors.summarizingDouble(Episodio::getAvaliacao));
 				
-	
+		System.out.println(estatistica);
 	}
 }
